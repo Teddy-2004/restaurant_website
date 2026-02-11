@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Reviews - {{ restaurant_name }}{% endblock %}
+
+{% block content %}
+<!-- Reviews Header -->
+<section class="py-5 bg-light" style="margin-top: 76px;">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Customer Reviews</h1>
+        <div class="mb-3" data-aos="fade-up" data-aos-delay="100">
+            {% for i in range(5) %}
+                {% if i < avg_rating|round|int %}
+                <i class="fas fa-star text-warning fa-2x"></i>
+                {% else %}
+                <i class="far fa-star text-warning fa-2x"></i>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <p class="lead mb-0" data-aos="fade-up" data-aos-delay="200">
+            {{ "%.1f"|format(avg_rating) }} out of 5 stars ({{ total_reviews }} reviews)
+        </p>
+    </div>
+</section>
+
+<!-- Leave a Review -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm" data-aos="fade-up">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Leave a Review</h3>
+                        <form method="POST" class="needs-validation" novalidate>
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Your Name *</label>
+                                {{ form.customer_name(class="form-control", required=True) }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Rating *</label>
+                                {{ form.rating(class="form-select", required=True) }}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Your Review *</label>
+                                {{ form.comment(class="form-control", rows=4, required=True) }}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Review
+                            </button>
+                            
+                            <p class="text-muted small mt-3 mb-0">
+                                Your review will be published after moderation.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews List -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Customers Say</h2>
+        
+        {% if pagination.items %}
+            <div class="row g-4">
+                {% for review in pagination.items %}
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ review.customer_name }}</h5>
+                                    <small class="text-muted">{{ review.created_at.strftime('%B %d, %Y') }}</small>
+                                </div>
+                                <div class="text-warning">
+                                    {% for i in range(review.rating) %}
+                                    <i class="fas fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="card-text">"{{ review.comment }}"</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if pagination.pages > 1 %}
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.reviews', page=pagination.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page in pagination.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('main.reviews', page=page) }}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.reviews', page=pagination.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <p class="lead text-muted">No reviews yet. Be the first to leave one!</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

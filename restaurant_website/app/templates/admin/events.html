@@ -1,0 +1,110 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Events{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Restaurant Events</h2>
+        <p class="text-muted">Promote live music, seasonal specials, and private bookings.</p>
+    </div>
+    <a href="{{ url_for('admin.add_event') }}" class="btn btn-primary">
+        <i class="fas fa-calendar-plus me-2"></i>Create New Event
+    </a>
+</div>
+
+<div class="row">
+    {% if events %}
+        {% for event in events %}
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        {% if event.image_url %}
+                            <img src="{{ url_for('static', filename='uploads/events/' + event.image_url) }}" 
+                                 class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 200px;" alt="{{ event.title }}">
+                        {% else %}
+                            <div class="bg-light h-100 d-flex align-items-center justify-content-center" style="min-height: 200px;">
+                                <i class="fas fa-calendar fa-3x text-muted opacity-25"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-9">
+                        <div class="card-body h-100 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h4 class="fw-bold mb-1">{{ event.title }}</h4>
+                                    <div class="d-flex gap-3 text-muted small">
+                                        <span><i class="fas fa-calendar-day me-1 text-primary"></i>{{ event.event_date.strftime('%A, %b %d, %Y') }}</span>
+                                        <span><i class="fas fa-clock me-1 text-primary"></i>{{ event.event_date.strftime('%I:%M %p') }}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    {% if event.is_featured %}
+                                        <span class="badge bg-warning text-dark"><i class="fas fa-star me-1"></i>Featured</span>
+                                    {% endif %}
+                                    {% if event.is_active %}
+                                        <span class="badge bg-success-subtle text-success border border-success">Live</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary-subtle text-secondary border border-secondary">Draft</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <p class="card-text text-muted flex-grow-1">
+                                {{ event.description[:200] }}{{ '...' if event.description|length > 200 else '' }}
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                <small class="text-muted italic">
+                                    Last updated: {{ event.updated_at.strftime('%Y-%m-%d') if event.updated_at else 'N/A' }}
+                                </small>
+                                <div class="btn-group">
+                                    <a href="{{ url_for('admin.edit_event', id=event.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" 
+                                            data-bs-toggle="modal" data-bs-target="#deleteEvent{{ event.id }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteEvent{{ event.id }}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Event?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete <strong>{{ event.title }}</strong>? This will remove it from the public events calendar.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="{{ url_for('admin.delete_event', id=event.id) }}" method="POST">
+                            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center py-5">
+            <div class="bg-light d-inline-block p-4 rounded-circle mb-3">
+                <i class="fas fa-calendar-times fa-3x text-muted"></i>
+            </div>
+            <h4>No events scheduled</h4>
+            <p class="text-muted">Once you add an event, it will appear here for management.</p>
+            <a href="{{ url_for('admin.add_event') }}" class="btn btn-primary">Create Your First Event</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

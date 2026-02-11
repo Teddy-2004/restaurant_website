@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - {{ restaurant_name }}{% endblock %}
+
+{% block content %}
+<!-- About Header -->
+<section class="py-5 bg-pattern" style="margin-top: 76px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <h1 class="display-4 fw-bold mb-4">Our Story</h1>
+                <p class="lead text-muted mb-4">
+                    A journey through authentic Mediterranean flavors
+                </p>
+                <p class="mb-4">
+                    Since our establishment, {{ restaurant_name }} has been dedicated to bringing 
+                    the authentic tastes of the Mediterranean to our community. Our passion for 
+                    fresh ingredients, traditional recipes, and warm hospitality has made us a 
+                    beloved destination for food lovers.
+                </p>
+                <p>
+                    Every dish we serve tells a story of the sun-kissed shores of the Mediterranean—from 
+                    the olive groves of Greece to the vibrant markets of Turkey, the coastal villages 
+                    of Italy to the historic streets of Spain.
+                </p>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800" 
+                     alt="Restaurant" class="img-fluid rounded shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Our Values</h2>
+            <p class="lead text-muted">What makes us special</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-seedling fa-4x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Fresh & Local</h4>
+                    <p class="text-muted">
+                        We source our ingredients from local farmers and suppliers, ensuring 
+                        the freshest produce for every dish.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-book-open fa-4x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Authentic Recipes</h4>
+                    <p class="text-muted">
+                        Our recipes have been passed down through generations, preserving 
+                        the authentic flavors of Mediterranean cuisine.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-heart fa-4x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Made with Love</h4>
+                    <p class="text-muted">
+                        Every dish is prepared with care and attention to detail by our 
+                        passionate team of chefs.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Meet the Chef -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-right">
+                <img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?w=600" 
+                     alt="Head Chef" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-lg-7" data-aos="fade-left">
+                <h2 class="display-5 fw-bold mb-4">Meet Our Head Chef</h2>
+                <h4 class="text-primary mb-3">Chef Alessandro Rossi</h4>
+                <p class="mb-3">
+                    With over 20 years of culinary experience across the Mediterranean, Chef Alessandro 
+                    brings authentic flavors and innovative techniques to every dish.
+                </p>
+                <p class="mb-3">
+                    Trained in Italy's finest culinary schools and having worked in Michelin-starred 
+                    restaurants throughout Europe, Chef Alessandro is passionate about sharing the 
+                    rich culinary heritage of the Mediterranean.
+                </p>
+                <p class="mb-4">
+                    "Cooking is about bringing people together. Every meal should be a celebration 
+                    of life, family, and the beautiful ingredients nature provides us."
+                </p>
+                <p class="text-muted fst-italic">- Chef Alessandro Rossi</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Kitchen -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Our Kitchen</h2>
+            <p class="lead text-muted">Where the magic happens</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6" data-aos="zoom-in">
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=700" 
+                     alt="Kitchen" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=700" 
+                     alt="Cooking" class="img-fluid rounded shadow">
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto text-center" data-aos="fade-up">
+                <p class="lead">
+                    Our state-of-the-art kitchen combines traditional cooking methods with modern 
+                    equipment, allowing us to create dishes that honor the past while embracing 
+                    culinary innovation.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Awards & Recognition -->
+<section class="py-5 bg-dark text-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Awards & Recognition</h2>
+            <p class="lead">Celebrating our achievements</p>
+        </div>
+        
+        <div class="row g-4 text-center">
+            <div class="col-md-3" data-aos="fade-up">
+                <i class="fas fa-trophy fa-3x mb-3 text-warning"></i>
+                <h5>Best Mediterranean</h5>
+                <p class="text-white-50">Restaurant of the Year 2023</p>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-star fa-3x mb-3 text-warning"></i>
+                <h5>Michelin Guide</h5>
+                <p class="text-white-50">Recommended 2022-2024</p>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-certificate fa-3x mb-3 text-warning"></i>
+                <h5>Excellence Award</h5>
+                <p class="text-white-50">OpenTable Diners' Choice</p>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-medal fa-3x mb-3 text-warning"></i>
+                <h5>Wine Spectator</h5>
+                <p class="text-white-50">Award of Excellence</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

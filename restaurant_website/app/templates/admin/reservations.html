@@ -1,0 +1,70 @@
+{% extends "admin/admin_base.html" %}
+
+{% block admin_content %}
+<div class="card shadow-sm border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Customer</th>
+                    <th>Date & Time</th>
+                    <th>Party Size</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# IMPORTANT: Notice '.items' after pagination #}
+                {% if pagination.items %}
+                    {% for res in pagination.items %}
+                    <tr>
+                        <td>
+                            <div class="fw-bold">{{ res.name }}</div>
+                            <small class="text-muted">{{ res.email }}</small><br>
+                            <small class="text-muted">{{ res.phone }}</small>
+                        </td>
+                        <td>
+                            <div>{{ res.date.strftime('%Y-%m-%d') }}</div>
+                            <small class="text-muted">{{ res.time.strftime('%I:%M %p') }}</small>
+                        </td>
+                        <td><span class="badge bg-light text-dark">{{ res.party_size }} People</span></td>
+                        <td>
+                            {% if res.status == 'pending' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif res.status == 'confirmed' %}
+                                <span class="badge bg-success">Confirmed</span>
+                            {% else %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{{ url_for('admin.update_reservation', id=res.id) }}" class="btn btn-sm btn-outline-primary">
+                                Manage
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">No reservations found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% for page_num in pagination.iter_pages() %}
+            {% if page_num %}
+                <li class="page-item {{ 'active' if page_num == pagination.page }}">
+                    <a class="page-link" href="{{ url_for('admin.reservations', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{% endblock %}

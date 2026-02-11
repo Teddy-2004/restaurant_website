@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Our Menu - {{ restaurant_name }}{% endblock %}
+
+{% block content %}
+<!-- Menu Header -->
+<section class="menu-header">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Our Menu</h1>
+        <p class="lead mb-0" data-aos="fade-up" data-aos-delay="100">
+            Explore our selection of authentic Mediterranean dishes
+        </p>
+    </div>
+</section>
+
+<!-- Category Navigation -->
+<div class="menu-category-nav">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-center align-items-center">
+            <span class="category-badge active" data-category="all">All Items</span>
+            {% for category in categories %}
+            <span class="category-badge" data-category="{{ category.id }}">
+                {{ category.name }}
+            </span>
+            {% endfor %}
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" 
+                           class="form-control border-start-0" 
+                           id="menuSearch" 
+                           placeholder="Search menu items...">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Items -->
+<section class="py-5">
+    <div class="container">
+        {% if menu_items %}
+            {% for category in categories %}
+                {% set category_items = menu_items|selectattr('category_id', 'equalto', category.id)|list %}
+                {% if category_items %}
+                <div class="mb-5" data-aos="fade-up">
+                    <h2 class="h3 fw-bold mb-4 text-primary">
+                        <i class="fas fa-utensils me-2"></i>{{ category.name }}
+                    </h2>
+                    <div class="row">
+                        {% for item in category_items %}
+                        <div class="col-12 menu-item-card" data-category="{{ item.category_id }}">
+                            {% if item.image_url %}
+                            <img src="{{ url_for('static', filename='uploads/' + item.image_url) }}" 
+                                 alt="{{ item.name }}" 
+                                 class="menu-item-image">
+                            {% else %}
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300" 
+                                 alt="{{ item.name }}" 
+                                 class="menu-item-image">
+                            {% endif %}
+                            
+                            <div class="menu-item-content">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="menu-item-title mb-1">{{ item.name }}</h5>
+                                    <span class="h5 mb-0 text-primary ms-3">${{ "%.2f"|format(item.price) }}</span>
+                                </div>
+                                
+                                <p class="menu-item-description text-muted mb-2">{{ item.description }}</p>
+                                
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    {% if item.is_featured %}
+                                    <span class="badge bg-primary">
+                                        <i class="fas fa-star me-1"></i>Featured
+                                    </span>
+                                    {% endif %}
+                                    
+                                    {% if item.allergens %}
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        Contains: {{ item.allergens }}
+                                    </span>
+                                    {% endif %}
+                                    
+                                    {% if item.preparation_time %}
+                                    <small class="text-muted">
+                                        <i class="far fa-clock me-1"></i>{{ item.preparation_time }} min
+                                    </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                <p class="lead text-muted">No menu items available at this time.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="h3 fw-bold mb-3">Ready to Try Our Delicious Food?</h2>
+        <p class="lead mb-4">Reserve your table now and experience Mediterranean excellence</p>
+        <a href="{{ url_for('main.reservations') }}" class="btn btn-light btn-lg">
+            <i class="fas fa-calendar-check me-2"></i>Reserve a Table
+        </a>
+    </div>
+</section>
+{% endblock %}

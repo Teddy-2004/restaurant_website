@@ -1,0 +1,55 @@
+{% extends "admin/admin_base.html" %}
+
+{% block admin_content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.reservations') }}">Reservations</a></li>
+                <li class="breadcrumb-item active">Manage Booking</li>
+            </ol>
+        </nav>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h4 class="mb-0 fw-bold">Manage Booking: {{ reservation.name }}</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-secondary border-0 mb-4">
+                    <div class="row">
+                        <div class="col-sm-6 mb-2">
+                            <small class="text-muted d-block">Customer</small>
+                            <strong>{{ reservation.name }}</strong>
+                        </div>
+                        <div class="col-sm-6 mb-2 text-sm-end">
+                            <small class="text-muted d-block">Party Size</small>
+                            <strong>{{ reservation.party_size }} Guests</strong>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Date & Time</small>
+                            <strong>{{ reservation.date.strftime('%Y-%m-%d') }} @ {{ reservation.time.strftime('%I:%M %p') }}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-4">
+                        {{ form.status.label(class="form-label fw-bold") }}
+                        {{ form.status(class="form-select form-select-lg") }}
+                        <div class="form-text mt-2">
+                            Switching to <strong>Confirmed</strong> will email the customer.
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Update Reservation</button>
+                        <a href="{{ url_for('admin.reservations') }}" class="btn btn-outline-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

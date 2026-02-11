@@ -1,0 +1,100 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Gallery{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Photo Gallery</h2>
+        <p class="text-muted">Upload and manage images for your restaurant's website.</p>
+    </div>
+    <a href="{{ url_for('admin.add_gallery_image') }}" class="btn btn-primary">
+        <i class="fas fa-upload me-2"></i>Upload New Image
+    </a>
+</div>
+
+{% if images %}
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for image in images %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 gallery-card">
+            <div class="position-relative">
+                <img src="{{ url_for('static', filename='uploads/gallery/' + image.image_url) }}" 
+                     class="card-img-top" alt="{{ image.alt_text }}"
+                     style="height: 200px; object-fit: cover;">
+                
+                {% if not image.is_active %}
+                <span class="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">Hidden</span>
+                {% endif %}
+                
+                <span class="position-absolute top-0 start-0 m-2 badge bg-dark opacity-75">
+                    #{{ image.display_order }}
+                </span>
+            </div>
+
+            <div class="card-body">
+                <h6 class="card-title text-truncate mb-1">{{ image.title or 'Untitled Image' }}</h6>
+                <p class="card-text small text-muted text-truncate">{{ image.description or 'No description provided.' }}</p>
+            </div>
+
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center pb-3">
+                <small class="text-muted">
+                    <i class="far fa-calendar-alt me-1"></i>{{ image.created_at.strftime('%Y-%m-%d') if image.created_at else 'N/A' }}
+                </small>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-danger" 
+                            data-bs-toggle="modal" data-bs-target="#deleteImg{{ image.id }}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteImg{{ image.id }}" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Remove Image?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="{{ url_for('static', filename='uploads/gallery/' + image.image_url) }}" 
+                         class="img-thumbnail mb-3" style="max-height: 150px;">
+                    <p>Are you sure you want to delete <strong>{{ image.title or 'this image' }}</strong>? This will remove it from the website permanently.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form action="{{ url_for('admin.delete_gallery_image', id=image.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete Permanently</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card border-dashed py-5 text-center">
+    <div class="card-body">
+        <i class="fas fa-images fa-4x text-light mb-3"></i>
+        <h4>Your gallery is empty</h4>
+        <p class="text-muted">Start uploading photos of your dishes, interior, or events.</p>
+        <a href="{{ url_for('admin.add_gallery_image') }}" class="btn btn-primary">Upload First Image</a>
+    </div>
+</div>
+{% endif %}
+
+<style>
+    .gallery-card {
+        transition: transform 0.2s ease;
+    }
+    .gallery-card:hover {
+        transform: translateY(-5px);
+    }
+    .border-dashed {
+        border: 2px dashed #dee2e6;
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

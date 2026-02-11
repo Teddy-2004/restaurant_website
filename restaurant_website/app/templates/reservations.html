@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Reserve a Table - {{ restaurant_name }}{% endblock %}
+
+{% block content %}
+<!-- Reservation Header -->
+<section class="py-5 bg-light" style="margin-top: 76px;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h1 class="display-4 fw-bold mb-3">Reserve Your Table</h1>
+            <p class="lead text-muted">Book your dining experience with us</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="reservation-form" data-aos="fade-up" data-aos-delay="100">
+                    <form method="POST" action="{{ url_for('main.reservations') }}" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row g-4">
+                            <!-- Name -->
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user me-2 text-primary"></i>Full Name *
+                                </label>
+                                {{ form.name(class="form-control", placeholder="John Doe", required=True) }}
+                                <div class="invalid-feedback">Please provide your name.</div>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">
+                                    <i class="fas fa-envelope me-2 text-primary"></i>Email Address *
+                                </label>
+                                {{ form.email(class="form-control", placeholder="john@example.com", required=True) }}
+                                <div class="invalid-feedback">Please provide a valid email.</div>
+                            </div>
+                            
+                            <!-- Phone -->
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">
+                                    <i class="fas fa-phone me-2 text-primary"></i>Phone Number *
+                                </label>
+                                {{ form.phone(class="form-control", type="tel", placeholder="(555) 123-4567", required=True) }}
+                                <div class="invalid-feedback">Please provide your phone number.</div>
+                            </div>
+                            
+                            <!-- Party Size -->
+                            <div class="col-md-6">
+                                <label for="party_size" class="form-label">
+                                    <i class="fas fa-users me-2 text-primary"></i>Party Size *
+                                </label>
+                                {{ form.party_size(class="form-control", min=1, max=20, required=True) }}
+                                <div class="invalid-feedback">Please select party size (1-20).</div>
+                            </div>
+                            
+                            <!-- Date -->
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">
+                                    <i class="fas fa-calendar me-2 text-primary"></i>Date *
+                                </label>
+                                {{ form.date(class="form-control", id="date", required=True) }}
+                                <div class="invalid-feedback">Please select a date.</div>
+                            </div>
+                            
+                            <!-- Time -->
+                            <div class="col-md-6">
+                                <label for="time" class="form-label">
+                                    <i class="fas fa-clock me-2 text-primary"></i>Time *
+                                </label>
+                                {{ form.time(class="form-control", id="time", required=True) }}
+                                <div class="invalid-feedback">Please select a time.</div>
+                            </div>
+                            
+                            <!-- Availability Message -->
+                            <div class="col-12">
+                                <div id="availabilityMessage"></div>
+                            </div>
+                            
+                            <!-- Special Requests -->
+                            <div class="col-12">
+                                <label for="special_requests" class="form-label">
+                                    <i class="fas fa-comment me-2 text-primary"></i>Special Requests
+                                </label>
+                                {{ form.special_requests(class="form-control", rows=4, 
+                                   placeholder="Any dietary restrictions, special occasions, or seating preferences?") }}
+                                <small class="text-muted">
+                                    We'll do our best to accommodate your requests, subject to availability.
+                                </small>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-calendar-check me-2"></i>Submit Reservation
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reservation Info -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="contact-info-box">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h5 class="mb-3">Operating Hours</h5>
+                    <p class="mb-2"><strong>Mon-Thu:</strong> 11 AM - 10 PM</p>
+                    <p class="mb-2"><strong>Fri-Sat:</strong> 11 AM - 11 PM</p>
+                    <p class="mb-0"><strong>Sunday:</strong> 12 PM - 9 PM</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="contact-info-box">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h5 class="mb-3">Call Us</h5>
+                    <p class="mb-2">For immediate reservations or inquiries:</p>
+                    <p class="h5 text-primary mb-0">
+                        <a href="tel:{{ restaurant_phone }}" class="text-decoration-none">
+                            {{ restaurant_phone }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="contact-info-box">
+                    <div class="contact-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h5 class="mb-3">Good to Know</h5>
+                    <p class="mb-2">• Reservations confirmed within 24 hours</p>
+                    <p class="mb-2">• Party size up to 20 guests</p>
+                    <p class="mb-0">• Cancellations accepted anytime</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQs -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-up">Frequently Asked Questions</h2>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion" data-aos="fade-up" data-aos-delay="100">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq1">
+                                How far in advance can I make a reservation?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                You can make reservations up to 30 days in advance. For special events or 
+                                large parties, please call us directly.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq2">
+                                What is your cancellation policy?
+                            </button>
+                        </h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                You can cancel or modify your reservation at any time by calling us at 
+                                {{ restaurant_phone }} or emailing {{ restaurant_email }}.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq3">
+                                Do you accommodate dietary restrictions?
+                            </button>
+                        </h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! We can accommodate most dietary restrictions including vegetarian, vegan, 
+                                gluten-free, and allergen-free options. Please mention your requirements in 
+                                the special requests section.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#faq4">
+                                Is there parking available?
+                            </button>
+                        </h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we have complimentary valet parking available for all our guests. 
+                                Street parking is also available nearby.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Set minimum date to today
+    const dateInput = document.getElementById('date');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+    
+    // Set default time options during operating hours
+    const timeInput = document.getElementById('time');
+    timeInput.setAttribute('min', '11:00');
+    timeInput.setAttribute('max', '22:00');
+    timeInput.setAttribute('step', '900'); // 15 minute intervals
+</script>
+{% endblock %}

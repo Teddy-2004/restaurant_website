@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - {{ restaurant_name }}{% endblock %}
+
+{% block content %}
+<!-- Gallery Header -->
+<section class="py-5 bg-dark text-white" style="margin-top: 76px;">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Our Gallery</h1>
+        <p class="lead mb-0" data-aos="fade-up" data-aos-delay="100">
+            A visual journey through our restaurant
+        </p>
+    </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="py-5">
+    <div class="container">
+        {% if pagination.items %}
+            <div class="row g-4">
+                {% for image in pagination.items %}
+                <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="{{ loop.index * 50 }}">
+                    <a href="{{ url_for('static', filename='uploads/' + image.image_url) }}" 
+                       data-lightbox="gallery" 
+                       data-title="{{ image.title or '' }}">
+                        <div class="gallery-item">
+                            <img src="{{ url_for('static', filename='uploads/' + image.image_url) }}" 
+                                 alt="{{ image.alt_text or image.title or 'Gallery Image' }}" 
+                                 class="img-fluid rounded shadow-sm">
+                        </div>
+                    </a>
+                    {% if image.title %}
+                    <p class="text-center mt-2 fw-bold">{{ image.title }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if pagination.pages > 1 %}
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.gallery', page=pagination.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page %}
+                            <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('main.gallery', page=page) }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.gallery', page=pagination.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-images fa-4x text-muted mb-4"></i>
+                <h3 class="text-muted">No images in gallery yet</h3>
+                <p class="text-muted">Check back soon for beautiful photos of our restaurant!</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
