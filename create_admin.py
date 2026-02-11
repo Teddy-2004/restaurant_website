@@ -40,6 +40,8 @@ def create_admin_user():
             print(f"   Username: {app.config['ADMIN_USERNAME']}")
             print(f"   Password: {app.config['ADMIN_PASSWORD']}")
             print(f"   Email: {app.config['ADMIN_EMAIL']}")
+        
+        
 
 
 def create_sample_data():

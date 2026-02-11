@@ -64,7 +64,10 @@ def create_app(config_name=None):
     
     # Register template filters
     register_template_filters(app)
-    
+    # Auto-create tables (for Render free plan)
+    with app.app_context():
+        db.create_all()
+
     return app
 
 
